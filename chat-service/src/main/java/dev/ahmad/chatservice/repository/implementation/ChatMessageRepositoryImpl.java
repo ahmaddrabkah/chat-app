@@ -6,6 +6,7 @@ import dev.ahmad.chatservice.repository.ChatMessageJpaRepository;
 import dev.ahmad.chatservice.repository.ChatMessageRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public class ChatMessageRepositoryImpl implements ChatMessageRepository {
 
@@ -16,12 +17,27 @@ public class ChatMessageRepositoryImpl implements ChatMessageRepository {
     }
 
     @Override
-    public long countBySenderIdAndReceiverIdAndStatus(String senderId, String receiverId, MessageStatus status) {
-        return jpaRepository.countBySenderIdAndReceiverIdAndStatus(senderId, receiverId, status);
+    public ChatMessage save(ChatMessage chatMessage) {
+        return jpaRepository.save(chatMessage);
+    }
+
+    @Override
+    public Optional<ChatMessage> findById(Long id) {
+        return jpaRepository.findById(id);
     }
 
     @Override
     public List<ChatMessage> findByChatId(String chatId) {
         return jpaRepository.findByChatId(chatId);
+    }
+
+    @Override
+    public void updateStatus(String senderId, String receiverId, MessageStatus status) {
+        jpaRepository.updateStatus(senderId, receiverId, status);
+    }
+
+    @Override
+    public long countBySenderIdAndReceiverIdAndStatus(String senderId, String receiverId, MessageStatus status) {
+        return jpaRepository.countBySenderIdAndReceiverIdAndStatus(senderId, receiverId, status);
     }
 }

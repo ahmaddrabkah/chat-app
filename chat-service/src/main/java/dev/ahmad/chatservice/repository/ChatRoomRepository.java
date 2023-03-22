@@ -7,5 +7,6 @@ import java.util.Optional;
 public interface ChatRoomRepository {
 
     ChatRoom save(ChatRoom chatRoom);
+
     Optional<ChatRoom> findBySenderIdAndReceiverId(String senderId, String receiverId);
 }

@@ -9,12 +9,12 @@ import org.springframework.context.annotation.Configuration;
 public class RepositoryConfig {
 
     @Bean
-    public ChatMessageRepository chatMessageRepository(ChatMessageJpaRepository jpaRepository){
+    public ChatMessageRepository chatMessageRepository(ChatMessageJpaRepository jpaRepository) {
         return new ChatMessageRepositoryImpl(jpaRepository);
     }
 
     @Bean
-    public ChatRoomRepository chatRoomRepository(ChatRoomJpaRepository jpaRepository){
+    public ChatRoomRepository chatRoomRepository(ChatRoomJpaRepository jpaRepository) {
         return new ChatRoomRepositoryImpl(jpaRepository);
     }
 }
