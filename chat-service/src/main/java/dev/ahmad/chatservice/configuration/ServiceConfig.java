@@ -1,7 +1,9 @@
-package dev.ahmad.chatservice.service;
+package dev.ahmad.chatservice.configuration;
 
 import dev.ahmad.chatservice.repository.ChatMessageRepository;
 import dev.ahmad.chatservice.repository.ChatRoomRepository;
+import dev.ahmad.chatservice.service.ChatMessageService;
+import dev.ahmad.chatservice.service.ChatRoomService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
