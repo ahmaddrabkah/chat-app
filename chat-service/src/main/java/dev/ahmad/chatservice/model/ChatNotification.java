@@ -1,22 +1,25 @@
 package dev.ahmad.chatservice.model;
 
 public class ChatNotification {
-    private String id;
+    private Long messageId;
     private String senderId;
     private String senderName;
 
-    public ChatNotification(String id, String senderId, String senderName) {
-        this.id = id;
+    public ChatNotification() {
+    }
+
+    public ChatNotification(Long id, String senderId, String senderName) {
+        this.messageId = id;
         this.senderId = senderId;
         this.senderName = senderName;
     }
 
-    public String getId() {
-        return id;
+    public Long getMessageId() {
+        return messageId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setMessageId(Long messageId) {
+        this.messageId = messageId;
     }
 
     public String getSenderId() {

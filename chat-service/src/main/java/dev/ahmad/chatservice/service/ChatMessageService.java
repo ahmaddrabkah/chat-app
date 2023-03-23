@@ -2,6 +2,7 @@ package dev.ahmad.chatservice.service;
 
 import dev.ahmad.chatservice.exception.MessageNotFoundException;
 import dev.ahmad.chatservice.model.ChatMessage;
+import dev.ahmad.chatservice.model.ChatNotification;
 import dev.ahmad.chatservice.model.MessageStatus;
 import dev.ahmad.chatservice.repository.ChatMessageRepository;
 
@@ -48,6 +49,16 @@ public class ChatMessageService {
 
     public void updateStatus(String senderId, String receiverId, MessageStatus status) {
         chatMessageRepository.updateStatus(senderId, receiverId, status);
+    }
+
+    public ChatNotification processMessage(ChatMessage chatMessage) {
+        String chatId = chatRoomService.getChatId(chatMessage.getSenderId(), chatMessage.getReceiverId())
+                .orElseGet(() -> chatRoomService.create(chatMessage.getSenderId(), chatMessage.getReceiverId()));
+        chatMessage.setChatId(chatId);
+
+        ChatMessage savedChatMessage = chatMessageRepository.save(chatMessage);
+
+        return new ChatNotification(savedChatMessage.getId(), savedChatMessage.getSenderId(), savedChatMessage.getSenderName());
     }
 
 }

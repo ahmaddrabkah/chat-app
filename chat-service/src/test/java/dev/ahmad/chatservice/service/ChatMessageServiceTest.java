@@ -2,6 +2,7 @@ package dev.ahmad.chatservice.service;
 
 import dev.ahmad.chatservice.exception.MessageNotFoundException;
 import dev.ahmad.chatservice.model.ChatMessage;
+import dev.ahmad.chatservice.model.ChatNotification;
 import dev.ahmad.chatservice.model.MessageStatus;
 import dev.ahmad.chatservice.repository.ChatMessageRepository;
 import org.junit.jupiter.api.Assertions;
@@ -26,7 +27,7 @@ class ChatMessageServiceTest {
     }
 
     @Test
-    void givenChatMessage_whenSave_thenMessageShouldSavedAndReturnWithReceivedStatus() {
+    public void givenChatMessage_whenSave_thenMessageShouldSavedAndReturnWithReceivedStatus() {
         ChatMessage chatMessage = getChatMessage();
 
         Mockito.when(chatMessageRepository.save(chatMessage)).thenReturn(chatMessage);
@@ -40,7 +41,7 @@ class ChatMessageServiceTest {
     }
 
     @Test
-    void givenIdForExistingMessage_whenFindMessageById_thenMessageShouldSavedAndReturnWithDeliveredStatus() {
+    public void givenIdForExistingMessage_whenFindMessageById_thenMessageShouldSavedAndReturnWithDeliveredStatus() {
         ChatMessage chatMessage = getChatMessage();
 
         Mockito.when(chatMessageRepository.save(chatMessage)).thenReturn(chatMessage);
@@ -56,7 +57,7 @@ class ChatMessageServiceTest {
     }
 
     @Test
-    void givenIdForNoneExistingMessage_whenFindMessageById_thenShouldThrowMessageNotFoundException() {
+    public void givenIdForNoneExistingMessage_whenFindMessageById_thenShouldThrowMessageNotFoundException() {
         Mockito.when(chatMessageRepository.findById(1L)).thenReturn(Optional.empty());
 
         MessageNotFoundException exception = Assertions.assertThrows(MessageNotFoundException.class, () -> chatMessageService.findMessageById(1L));
@@ -68,7 +69,7 @@ class ChatMessageServiceTest {
     }
 
     @Test
-    void countMessageOfStatus() {
+    public void countMessageOfStatus() {
         Mockito.when(chatMessageRepository.countBySenderIdAndReceiverIdAndStatus("S1", "R1", MessageStatus.RECEIVED))
                 .thenReturn(1L);
 
@@ -80,7 +81,7 @@ class ChatMessageServiceTest {
     }
 
     @Test
-    void givenSenderAndReceiverIdsHaveNoMessages_whenFindChatMessages_thenShouldReturnEmptyList() {
+    public void givenSenderAndReceiverIdsHaveNoMessages_whenFindChatMessages_thenShouldReturnEmptyList() {
         Mockito.when(chatRoomService.getChatId("S1", "R1"))
                 .thenReturn(Optional.empty());
 
@@ -93,7 +94,7 @@ class ChatMessageServiceTest {
     }
 
     @Test
-    void givenSenderAndReceiverIdsHaveMessages_whenFindChatMessages_thenShouldReturnListOfMessages() {
+    public void givenSenderAndReceiverIdsHaveMessages_whenFindChatMessages_thenShouldReturnListOfMessages() {
         List<ChatMessage> chatMessages = List.of(getChatMessage());
 
         Mockito.when(chatRoomService.getChatId("S1", "R1")).thenReturn(Optional.of("C1"));
@@ -107,6 +108,43 @@ class ChatMessageServiceTest {
         Mockito.verify(chatRoomService).getChatId("S1", "R1");
         Mockito.verify(chatMessageRepository).findByChatId("C1");
         Mockito.verify(chatMessageRepository).updateStatus("S1", "R1", MessageStatus.DELIVERED);
+    }
+
+    @Test
+    public void givenChatMessageWithSenderAndReceiverIdsHaveNoChat_whenProcessMessage_thenShouldCreateChatRoomAndReturnNotification() {
+        ChatMessage chatMessage = getChatMessage();
+
+        Mockito.when(chatRoomService.getChatId(chatMessage.getSenderId(), chatMessage.getReceiverId())).thenReturn(Optional.empty());
+        Mockito.when(chatRoomService.create(chatMessage.getSenderId(), chatMessage.getReceiverId())).thenReturn(chatMessage.getChatId());
+        Mockito.when(chatMessageRepository.save(chatMessage)).thenReturn(chatMessage);
+
+        ChatNotification chatNotification = chatMessageService.processMessage(chatMessage);
+
+        Assertions.assertEquals(chatNotification.getMessageId(), chatMessage.getId());
+        Assertions.assertEquals(chatNotification.getSenderId(), chatMessage.getSenderId());
+        Assertions.assertEquals(chatNotification.getSenderName(), chatMessage.getSenderName());
+
+        Mockito.verify(chatRoomService).getChatId(chatMessage.getSenderId(), chatMessage.getReceiverId());
+        Mockito.verify(chatRoomService).create(chatMessage.getSenderId(), chatMessage.getReceiverId());
+        Mockito.verify(chatMessageRepository).save(chatMessage);
+    }
+
+    @Test
+    public void givenChatMessageWithSenderAndReceiverIdsHaveChat_whenProcessMessage_thenShouldReturnNotification() {
+        ChatMessage chatMessage = getChatMessage();
+
+        Mockito.when(chatRoomService.getChatId(chatMessage.getSenderId(), chatMessage.getReceiverId())).thenReturn(Optional.of(chatMessage.getChatId()));
+        Mockito.when(chatMessageRepository.save(chatMessage)).thenReturn(chatMessage);
+
+        ChatNotification chatNotification = chatMessageService.processMessage(chatMessage);
+
+        Assertions.assertEquals(chatNotification.getMessageId(), chatMessage.getId());
+        Assertions.assertEquals(chatNotification.getSenderId(), chatMessage.getSenderId());
+        Assertions.assertEquals(chatNotification.getSenderName(), chatMessage.getSenderName());
+
+        Mockito.verify(chatRoomService).getChatId(chatMessage.getSenderId(), chatMessage.getReceiverId());
+        Mockito.verify(chatRoomService, Mockito.never()).create(chatMessage.getSenderId(), chatMessage.getReceiverId());
+        Mockito.verify(chatMessageRepository).save(chatMessage);
     }
 
     private ChatMessage getChatMessage() {
