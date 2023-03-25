@@ -1,9 +1,11 @@
 package dev.ahmad.authenticationservice.model;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 public class LocalUserDetails extends User implements UserDetails {
 
@@ -12,7 +14,10 @@ public class LocalUserDetails extends User implements UserDetails {
     }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return getRoles()
+                .stream()
+                .map(role -> new SimpleGrantedAuthority("ROLE_" +role.getName()))
+                .collect(Collectors.toSet());
     }
 
     @Override

@@ -1,5 +1,6 @@
 package dev.ahmad.authenticationservice.configuration;
 
+import dev.ahmad.authenticationservice.jwt.JwtTokenProvider;
 import dev.ahmad.authenticationservice.repository.UserRepository;
 import dev.ahmad.authenticationservice.service.LocalUserDetailsService;
 import dev.ahmad.authenticationservice.service.UserService;
@@ -19,7 +20,8 @@ public class ServiceConfig {
 
     @Bean
     public UserService userService(UserRepository userRepository,
-                                   PasswordEncoder passwordEncoder) {
-        return new UserService(userRepository, passwordEncoder);
+                                   PasswordEncoder passwordEncoder,
+                                   JwtTokenProvider jwtTokenProvider) {
+        return new UserService(userRepository, passwordEncoder, jwtTokenProvider);
     }
 }
