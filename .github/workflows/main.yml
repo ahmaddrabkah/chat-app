@@ -36,3 +36,10 @@ jobs:
         docker tag chat-service adrabkah/chat-service
         docker push  adrabkah/chat-service
         cd ..
+    - name: Build and push Docker image for UI
+      run: |
+        cd ./frontend/
+        docker build -t chat-app-ui .
+        docker tag chat-app-ui adrabkah/chat-app-ui
+        docker push  adrabkah/chat-app-ui
+        cd ..
