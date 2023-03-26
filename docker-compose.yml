@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  authentication-service:
+    image: adrabkah/authentication-service
+    ports:
+      - "8081:8081"
+  chat-service:
+    image: adrabkah/chat-service
+    ports:
+      - "8080:8080"
+  chat-app-ui:
+    image: frontend
+    ports:
+      - "3000:3000"
+    stdin_open: true
+    tty: true
