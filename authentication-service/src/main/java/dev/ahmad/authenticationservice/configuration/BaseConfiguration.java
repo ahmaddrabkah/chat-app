@@ -19,8 +19,8 @@ public class BaseConfiguration {
     @Bean
     CommandLineRunner runner(UserService userService) {
         return args -> {
-            userService.save(new User("Ahmad Drabkah", "ahmaddrabkah", "12345", "https://www.freepik.com/free-psd/3d-illustration-person-with-sunglasses_27470334.htm#query=user&position=3&from_view=keyword&track=sph"));
-            userService.save(new User("Mohammad Ali", "mohammad", "00000", "https://www.freepik.com/free-vector/businessman-character-avatar-isolated_6769264.htm#query=user&position=2&from_view=keyword&track=sph"));
+            userService.save(new User("Ahmad Drabkah", "ahmaddrabkah", "12345", "https://bobbyhadz.com/images/blog/react-prevent-multiple-button-clicks/thumbnail.webp"));
+            userService.save(new User("Mohammad Ali", "mohammad", "00000", "https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350"));
 
         };
     }

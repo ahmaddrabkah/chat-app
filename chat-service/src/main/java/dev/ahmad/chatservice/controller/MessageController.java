@@ -4,7 +4,6 @@ import dev.ahmad.chatservice.model.ChatMessage;
 import dev.ahmad.chatservice.model.ChatNotification;
 import dev.ahmad.chatservice.model.MessageStatus;
 import dev.ahmad.chatservice.service.ChatMessageService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -19,11 +18,11 @@ import java.util.List;
 
 @Controller
 public class MessageController {
-    @Autowired
-    private SimpMessagingTemplate simpMessagingTemplate;
+    private final SimpMessagingTemplate simpMessagingTemplate;
     private final ChatMessageService chatMessageService;
 
-    public MessageController(ChatMessageService chatMessageService) {
+    public MessageController(SimpMessagingTemplate simpMessagingTemplate, ChatMessageService chatMessageService) {
+        this.simpMessagingTemplate = simpMessagingTemplate;
         this.chatMessageService = chatMessageService;
     }
 
