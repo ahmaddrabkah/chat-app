@@ -24,7 +24,6 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
     - name: Build and push Docker image
       run: |
-          cd ./authentication-service/target
           docker build -t authentication-service:v1 .
           docker tag authentication-service:v1 adrabkah/authentication-service:v1
           docker push  adrabkah/authentication-service:v1
