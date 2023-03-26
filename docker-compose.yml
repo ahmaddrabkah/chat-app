@@ -2,10 +2,10 @@ version: '3.8'
 
 services:
   authentication-service:
-    image: adrabkah/authentication-service
+    image: adrabkah/authentication-service:v1
     ports:
       - "8081:8081"
   chat-service:
-    image: adrabkah/chat-service
+    image: adrabkah/chat-service:v1
     ports:
       - "8080:8080"

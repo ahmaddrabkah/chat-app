@@ -25,14 +25,14 @@ jobs:
     - name: Build and push Docker image for authentication-service
       run: |
           cd ./authentication-service/
-          docker build -t authentication-service:v1 .
-          docker tag authentication-service:v1 adrabkah/authentication-service:v1
-          docker push  adrabkah/authentication-service:v1
+          docker build -t authentication-service .
+          docker tag authentication-service adrabkah/authentication-service
+          docker push  adrabkah/authentication-service
           cd ..
     - name: Build and push Docker image for chat-service
       run: |
         cd ./chat-service/
-        docker build -t chat-service:v1 .
-        docker tag chat-service:v1 adrabkah/chat-service:v1
-        docker push  adrabkah/chat-service:v1
+        docker build -t chat-service .
+        docker tag chat-service adrabkah/chat-service
+        docker push  adrabkah/chat-service
         cd ..
