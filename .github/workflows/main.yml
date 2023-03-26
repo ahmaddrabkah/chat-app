@@ -1,9 +1,9 @@
 name: Chat_App_Pipeline
 on:
   push:
-    branches: [ ci-cd ]
+    branches: [ master ]
   pull_request:
-    branches: [ ci-cd ]
+    branches: [ master ]
 jobs:
   build:
     runs-on: ubuntu-latest
