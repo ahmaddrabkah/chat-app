@@ -41,7 +41,7 @@ public class User {
         this.password = password;
         this.active = true;
         this.profilePictureUrl = profilePicture;
-        this.roles = new HashSet<>() {{ new Role("USER"); }};
+        this.roles = new HashSet<>();
     }
 
     public Long getId() {

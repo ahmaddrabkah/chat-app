@@ -1,52 +1,21 @@
 package dev.ahmad.authenticationservice.service;
 
-import dev.ahmad.authenticationservice.jwt.JwtTokenProvider;
 import dev.ahmad.authenticationservice.model.User;
-import dev.ahmad.authenticationservice.repository.UserRepository;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
-public class UserService {
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final JwtTokenProvider jwtTokenProvider;
+public interface UserService {
+    User save(User user);
 
+    void addRole(String username, String roleName);
 
-    public UserService(UserRepository userRepository,
-                       PasswordEncoder passwordEncoder,
-                       JwtTokenProvider jwtTokenProvider) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtTokenProvider = jwtTokenProvider;
-    }
+    Optional<User> findByUsername(String username);
 
-    public User save(User user) {
-        if (exists(user.getUsername()))
-            return findByUsername(user.getUsername()).get();
-        user.setActive(true);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
-    }
+    boolean exists(String username);
 
-    public Optional<User> findByUsername(String username) {
-        return userRepository.findByUsername(username);
-    }
+    List<User> findAll();
 
-    public boolean exists(String username) {
-        return userRepository.existsByUsername(username);
-    }
-
-    public List<User> findAll() {
-        return StreamSupport.stream(userRepository.findAll().spliterator(), false)
-                .collect(Collectors.toList());
-    }
-
-    public String loginUser(Authentication authentication) {
-        return jwtTokenProvider.generateToken(authentication);
-    }
+    String loginUser(Authentication authentication);
 }

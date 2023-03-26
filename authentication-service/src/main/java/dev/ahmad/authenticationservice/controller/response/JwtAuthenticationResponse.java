@@ -1,9 +1,7 @@
 package dev.ahmad.authenticationservice.controller.response;
 
 
-import lombok.Data;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
 public class JwtAuthenticationResponse {
     @NonNull
