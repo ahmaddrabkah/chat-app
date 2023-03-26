@@ -3,7 +3,7 @@ package dev.ahmad.authenticationservice.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "")
+@Table(name = "CHAT_APP_ROLE")
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

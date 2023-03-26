@@ -12,11 +12,12 @@ public class LocalUserDetails extends User implements UserDetails {
     public LocalUserDetails(User user) {
         super(user);
     }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles()
                 .stream()
-                .map(role -> new SimpleGrantedAuthority("ROLE_" +role.getName()))
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName()))
                 .collect(Collectors.toSet());
     }
 

@@ -36,14 +36,6 @@ export function login(loginRequest) {
   });
 }
 
-export function facebookLogin(facebookLoginRequest) {
-  return request({
-    url: AUTH_SERVICE + "/facebook/signin",
-    method: "POST",
-    body: JSON.stringify(facebookLoginRequest),
-  });
-}
-
 export function getCurrentUser() {
   if (!localStorage.getItem("accessToken")) {
     return Promise.reject("No access token set.");

@@ -92,7 +92,6 @@ const Chat = (props) => {
 
       const newMessages = [...messages];
       newMessages.push(message);
-      messages.forEach(message => console.log(message.senderId === currentUser.id))
       setMessages(newMessages);
     }
   };
