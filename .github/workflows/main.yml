@@ -1,0 +1,30 @@
+name: Chat_App_Pipeline
+on:
+  push:
+    branches: [ frontend ]
+  pull_request:
+    branches: [ frontend ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up JDK 11
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+        distribution: 'adopt'
+        cache: maven
+    - name: Maven packaging
+      run: mvn -B clean package --file pom.xml
+    - name: Log in to Docker Hub
+      uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+    - name: Build and push Docker image
+      run: |
+          cd ./authentication-service/target
+          docker build -t authentication-service:v1 .
+          docker tag authentication-service:v1 adrabkah/authentication-service:v1
+          docker push  adrabkah/authentication-service:v1
