@@ -22,9 +22,17 @@ jobs:
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-    - name: Build and push Docker image
+    - name: Build and push Docker image for authentication-service
       run: |
           cd ./authentication-service/
           docker build -t authentication-service:v1 .
           docker tag authentication-service:v1 adrabkah/authentication-service:v1
           docker push  adrabkah/authentication-service:v1
+          cd ..
+    - name: Build and push Docker image for chat-service
+      run: |
+        cd ./chat-service/
+        docker build -t chat-service:v1 .
+        docker tag chat-service:v1 adrabkah/chat-service:v1
+        docker push  adrabkah/chat-service:v1
+        cd ..
